@@ -1,6 +1,6 @@
 import zipfile
 import os
-import sys
+import argparse
 from xml.dom import minidom
 
 def unzip(source_filename, dest_dir):
@@ -14,7 +14,7 @@ def unzip(source_filename, dest_dir):
 
 def list_dirfiles(dest_dir):
     try:
-        print "\n[*] Listing Files and Directories from %s" %source_filename
+        print "\n[*] Listing Files and Directories from %s" %dest_dir
         for path, subdir, files in os.walk(dest_dir):
             for name in files:
                 print os.path.join(path, name)
@@ -23,7 +23,7 @@ def list_dirfiles(dest_dir):
         parse_xml(xml_file)
             
     except Exception as e:
-            print "[ERROR] Listing Files and Directories from %s" %source_filename + str(e)
+            print "[ERROR] Listing Files and Directories from %s" %dest_dir + str(e)
 
 def parse_xml(file_name):
     try:
@@ -44,8 +44,16 @@ def parse_xml(file_name):
         print "[ERROR] Parsing %s files" %file_name + str(e)
 
 if __name__ == "__main__":
-    source_filename = sys.argv[1]
-    dest_dir = sys.argv[2]
-    unzip(source_filename, dest_dir)
-    list_dirfiles(dest_dir)
+    parser = argparse.ArgumentParser(description = 'Python program to programmatically \
+        unzip the package, list the filenames and directories in the package, and \
+        parse the XML file.')
+    parser.add_argument('src_file', metavar = '<ZIP_FILENAME>', type = str, \
+        help = 'Name of the Zipfile that needs to be extracted')
+    parser.add_argument('dest_dir', metavar = '<DEST_DIR>', type = str, \
+        help = 'Name of the Directory to which the Zipfile need to be extracted')
+
+
+    args = parser.parse_args()
+    unzip(args.src_file, args.dest_dir)
+    list_dirfiles(args.dest_dir)
     print "\n[*] Successfully Completed"
