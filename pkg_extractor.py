@@ -51,8 +51,6 @@ if __name__ == "__main__":
         help = 'Name of the Zipfile that needs to be extracted')
     parser.add_argument('dest_dir', metavar = '<DEST_DIR>', type = str, \
         help = 'Name of the Directory to which the Zipfile need to be extracted')
-
-
     args = parser.parse_args()
     unzip(args.src_file, args.dest_dir)
     list_dirfiles(args.dest_dir)
